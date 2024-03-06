@@ -11,5 +11,4 @@ class Test
 		System.out.println(sum);
 	}
 
-
 }
