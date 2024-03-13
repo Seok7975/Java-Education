@@ -13,6 +13,7 @@
 1.  git pull origin <branch명>
 2.  git branch --set-upstream-to=origin/<branch명> master -> 만약 main이면 master 대신 main으로 쓰기
 3.  git pull origin <branch명> --allow-unrelated-histories
+4. git branch -M main (Master -> Main으로 바꾸기)
 
 
 - 다른 브런치에서 pull 하기 : git pull origin <branch명>
