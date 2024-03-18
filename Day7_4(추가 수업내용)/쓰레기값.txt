@@ -1,0 +1,12 @@
+지역변수는 초기화 하지 않으면 쓰레기값이 들어가있음
+
+
+byte  0
+short 0
+int 0
+long 0L
+float 0.0f
+double 0.0d
+char '\u0000'
+boolean false
+참조변수 -> null 변수에 참조하는 주소가 없다

@@ -1,0 +1,25 @@
+//와일드카드 문자
+
+dir 
+
+dir * : 모든 디렉토리   (* : 모든)
+
+dir *.* :  디렉토리의 모든 파일, 모든 확장자
+
+dir *.java : 확장자가 java인 모든 파일을 보여줘
+
+dir *.c* : 확장자가 c로 시작하는 모든 파일
+
+dir A* : 파일의 이름이 A로시작하는 모든 파일
+
+
+javac *.java : 확장자가 java인 모든 파일
+
+mkdir sub : sub란 디렉토리를 만들어라
+make directory
+
+move AAA.class .\sub\AAA.class
+move BBB.class .\sub\BBB.class
+set classpath=.;.\sub;
+java ABMain
+pause 콘솔창을 잠시 멈추기위해

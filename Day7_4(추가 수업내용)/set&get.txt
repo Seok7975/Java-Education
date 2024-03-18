@@ -1,0 +1,37 @@
+class Number
+{
+	private int num1;
+	int num2;
+	protected int num3;
+	public int num4;
+
+	public int getNum1()
+	{
+		return num1;
+	}
+
+	public void setNum1(int num1)
+	{
+		this.num1 = num1;
+	}
+
+}
+
+class NumberMain
+{
+	public static void main(String[] args)
+	{
+		Number n1 = new Number();
+		// n1.num1 = 100; -> 오류!!!, num2~4는 가능 (접근제어 지시자 개념)
+		System.out.println(n1.getNum1());
+		n1.setNum1(10);
+	}
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+캡슐화
+

@@ -1,0 +1,11 @@
+class AAA 		// AAA() {} 생성자 삽입
+{
+	public AAA(){}  // 더 낮은 default 범위의 접근지시자의 범위로 삽입이 됨, public X
+	
+}
+
+public class BBB		// public BBB() {} 생성자 삽입
+{
+	BBB(){} // public이 아닌 더 낮은 default 범위의 접근지시자의 범위로 삽입이 됨
+}
+
