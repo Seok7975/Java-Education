@@ -1,0 +1,9 @@
+ArrayList<E>의 특징
+* 저장소의 용량을 늘리는 과정에서 많은 시간이 소요된다. - ArrayList<E>의 단점
+* 데이터의 삭제에 필요한 연산과정이 길다. - ArrayList<E>의 단점
+* 데이터의 참조가 용이해서 빠른 참조가 가능하다. - ArrayList<E>의 장점
+
+LinkedList<E> 특징
+* 저장소의 용량을 늘리는 과정이 간단하다. LinkedList<E>의 장점
+* 데이터의 삭제가 매우 간단하다. LinkedList<E>의 장점
+* 데이터의 참조가 다소 불편하다. LinkedList<E>의 단점 // 링크/노드를 타고 타고
