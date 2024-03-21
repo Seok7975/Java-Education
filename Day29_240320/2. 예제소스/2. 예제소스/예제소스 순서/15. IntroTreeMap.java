@@ -16,6 +16,10 @@ class IntroTreeMap
 		
 		NavigableSet<Integer> navi=tMap.navigableKeySet();
 
+// Map은 collection을 상속받지 않음. 따라사 Collection 메소드를 사용 불가(ex) Iterator 등)
+// 그래서 색다르게 NavigableSet<Integer> navi=tMap.navigableKeySet(); 사용해야함
+// Map : key값 중복불가
+// Set : 중복저장 불가
 /*
 	navigableKeySet 메소드가 호출되면, 인터페이스 NavigableSet<E>를 구현하는 인스
 	턴스가(인스턴스의 참조 값이)반환된다. 이 때 E는 key의 자료형인 Integer가 되며,
@@ -25,12 +29,13 @@ class IntroTreeMap
 	메소드가 반환하는 인스턴스를 대상으로 반복자를 얻기 위해서 iterator 메소드의 호출이
 	가능하다. 그리고 이렇게 해서 얻은 반복자로, 저장된 모든 key에 접근이 가능하다.			
 */
-		
+		//오름차순 반복자
 		System.out.println("오름차순 출력...");
 		Iterator<Integer> itr=navi.iterator();
 		while(itr.hasNext())
 			System.out.println(tMap.get(itr.next()));
 		
+		//내림차순 반복자
 		System.out.println("내림차순 출력...");
 		itr=navi.descendingIterator();
 		while(itr.hasNext())
