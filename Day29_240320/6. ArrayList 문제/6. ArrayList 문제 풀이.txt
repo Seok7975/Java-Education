@@ -1,5 +1,0 @@
-public void ensureCapacity(int minCapacity);		// 메소드 원형
-
-ArrayList<Integer> list = new ArrayList<Integer>();
-list.ensureCapacity(500);
-list.ensureCapacity(list.size()*2);
