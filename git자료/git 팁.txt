@@ -13,7 +13,6 @@
 1.  git pull origin <branch명>
 2.  git branch --set-upstream-to=origin/<branch명> master -> 만약 main이면 master 대신 main으로 쓰기
 3.  git pull origin <branch명> --allow-unrelated-histories
-4. git branch -M main (Master -> Main으로 바꾸기)
 
 
 - 다른 브런치에서 pull 하기 : git pull origin <branch명>
@@ -30,21 +29,22 @@ Updates were rejected because a pushed branch tip is behind its remote counterpa
 
 
 
+
 github default 브랜치 명 변경 방법
 :https://www.lesstif.com/gitbook/github-default-master-main-100205686.html
-
-
 
 
 서로 관련이 없는 두 프로젝트를 병합할때 오류 해결 방법
 :https://somjang.tistory.com/entry/Git-fatal-refusing-to-merge-unrelated-histories-%ED%95%B4%EA%B2%B0-%EB%B0%A9%EB%B2%95
 
 
+
+
 - git bash로 브랜치 생성 방법 -
 
 1. 깃 설치 후 할것,사용자 등록을 한다
 
-2. 만약 gitbash가 master인데 github가 main인 경우 git branch -m maste main으로 바꿔준다 (반대도 마찬가지)
+2. 만약 gitbash가 master인데 github가 main인 경우 git branch -m master main으로 바꿔준다 (반대도 마찬가지)
    *fatal: Not a valid object name 오류가 뜬 경우는 commit을 한 번도 안 해서 뜨므로 
    대충 새로운 브런치에 올릴 파일을 add 한 후에 commit -m을 하자
 
@@ -54,3 +54,21 @@ github default 브랜치 명 변경 방법
 
 5. 이미 git commit -m 한 파일이 있으므로 이 상태에서 git push를 해준다
     * git push --set-upstream origin 하라는 내용이 나오면 그대로 해준다
+
+
+https://velog.io/@hyeongjun/Git-GitHub-Repository%EC%97%90-push-%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-%ED%8C%8C%EC%9D%BC-%EC%98%AC%EB%A6%AC%EA%B8%B0
+
+
+
+-git bash에서 주소(레포지토리) 주소 바꾸는 법-
+1. git remote -v : 주소 무엇으로 넣어져 있는지 체크
+
+2. git remote set-url origin 바꿀주소
+
+if) 🚫 Remote origin already exists 
+에러기존의 repository가 연결된 상태에서 add를 하면 발생하는 에러이다.
+
+2-2-1. git remote remove  : remove로 기존 연결을 끊고 
+git remote add origin https://github.com/user/repo1.git
+
+2-2-2. git remote add 추가할주소 : 새로 추가하는 방법
