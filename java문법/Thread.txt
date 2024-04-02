@@ -1,0 +1,326 @@
+<Thread, 스레드>
+
+1. Thread
+독립적으로 수행 가능한 메인 프로세스 또는 메인 프로세스 외의 기타 프로세스의 기저이다.
+하나의 프로세스 내에서 실행하는 병행 메서드의 단위로, 
+어플리케이션의 스레드가 모두 종료되면 해당 어플리케이션이 종료된다.
+java 프로그램을 시작할 때 사용하는 main 메서드 또한 스레드이다.
+
+
+2. Thread 생성 방법
+
+  (1) White-box방식
+     * Thread 클래스를 상속받아서 생성(java.lang.Thread 객체를 extend하여 만드는 것)
+     * run()메서드를 오버라이드하여 구현해줘야 원하는 처리 가능
+     * white-box방식으로 제작한 스레드는 컴파일 타임 시점에 형식이 결정되어 
+       동적인 기능 변경이 불가능하다는 단점
+     * 스레드의 run() 메서드는 우리가 사용하는 main() 메서드와 같은 역할
+       (스레드를 시작하면 run() 메서드 부터 시작하여 실행하기 때문)
+       따라서 스레드를 시작할 때에는 구현한 run() 메서드를 시작하는 것이 아닌,
+       start() 메서드를 시작해야 정상적으로 실행시킬 수 있다.
+
+ex 1_run())
+class ThreadTest extends Thread{
+	String name;
+	
+	public ThreadTest(String name){
+		this.name = name;
+	}
+	
+	@Override
+	public void run() {
+		for(int i=0; i<3; i++) {
+			System.out.println("안녕하세요 전 스레드 - " + name + " 입니다.");
+			try {
+				// sleep 메서드는 쓰레드를 ms 단위로 대기시키는 메서드 입니다.
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// 스레드를 다섯개 생성합니다.
+		ThreadTest thread1 = new ThreadTest("thread1");
+		ThreadTest thread2 = new ThreadTest("thread2");
+		ThreadTest thread3 = new ThreadTest("thread3");
+		ThreadTest thread4 = new ThreadTest("thread4");
+		ThreadTest thread5 = new ThreadTest("thread5");
+		
+		// 스레드를 실행합니다.
+		// 스레드를 실행할 때에는 오버라이드한 run()이 아닌
+		// start() 메서드를 실행시켜 주어야 합니다.
+		thread1.run();
+		thread2.run();
+		thread3.run();
+		thread4.run();
+		thread5.run();
+	}
+}
+
+/*
+만약 위 코드처럼 스레드를 실행시킬 때 run()으로 시작 시킨다면,
+스레드는 main 메소드 위쪽에 스택으로 쌓이게 되며, 병행 처리를 하지 못하게 된다.
+
+-출력결과-
+안녕하세요 전 스레드 - thread1 입니다.
+안녕하세요 전 스레드 - thread1 입니다.
+안녕하세요 전 스레드 - thread1 입니다.
+안녕하세요 전 스레드 - thread2 입니다.
+안녕하세요 전 스레드 - thread2 입니다.
+안녕하세요 전 스레드 - thread2 입니다.
+안녕하세요 전 스레드 - thread3 입니다.
+안녕하세요 전 스레드 - thread3 입니다.
+안녕하세요 전 스레드 - thread3 입니다.
+안녕하세요 전 스레드 - thread4 입니다.
+안녕하세요 전 스레드 - thread4 입니다.
+안녕하세요 전 스레드 - thread4 입니다.
+안녕하세요 전 스레드 - thread5 입니다.
+안녕하세요 전 스레드 - thread5 입니다.
+안녕하세요 전 스레드 - thread5 입니다.
+*/
+
+ex 2_start())
+class ThreadTest extends Thread{
+	String name;
+	
+	public ThreadTest(String name){
+		this.name = name;
+	}
+	
+	@Override
+	public void run() {
+		for(int i=0; i<3; i++) {
+			System.out.println("안녕하세요 전 스레드 - " + name + " 입니다.");
+			try {
+				// sleep 메서드는 쓰레드를 ms 단위로 대기시키는 메서드 입니다.
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// 스레드를 다섯개 생성합니다.
+		ThreadTest thread1 = new ThreadTest("thread1");
+		ThreadTest thread2 = new ThreadTest("thread2");
+		ThreadTest thread3 = new ThreadTest("thread3");
+		ThreadTest thread4 = new ThreadTest("thread4");
+		ThreadTest thread5 = new ThreadTest("thread5");
+		
+		// 스레드를 실행합니다.
+		// 스레드를 실행할 때에는 오버라이드한 run()이 아닌
+		// start() 메서드를 실행시켜 주어야 합니다.
+		thread1.start();
+		thread2.start();
+		thread3.start();
+		thread4.start();
+		thread5.start();
+	}
+}
+
+/*
+-출력 결과-
+안녕하세요 전 스레드 - thread2 입니다.
+안녕하세요 전 스레드 - thread3 입니다.
+안녕하세요 전 스레드 - thread4 입니다.
+안녕하세요 전 스레드 - thread5 입니다.
+안녕하세요 전 스레드 - thread1 입니다.
+안녕하세요 전 스레드 - thread4 입니다.
+안녕하세요 전 스레드 - thread5 입니다.
+안녕하세요 전 스레드 - thread3 입니다.
+안녕하세요 전 스레드 - thread2 입니다.
+안녕하세요 전 스레드 - thread1 입니다.
+안녕하세요 전 스레드 - thread4 입니다.
+안녕하세요 전 스레드 - thread1 입니다.
+안녕하세요 전 스레드 - thread3 입니다.
+안녕하세요 전 스레드 - thread2 입니다.
+안녕하세요 전 스레드 - thread5 입니다.
+
+이처럼 start()메서드를 실행시킨다면, 스레드가 순차적으로 실행되는게 아닌 병행실행이 되기 때문에,
+스레드의 실행이 일관적으로 나타나지 않는 것을 확인할 수 있다.
+따라서 스레드로 병행처리를 하고 싶다면 스레드의 start() 메서드를 사용해야 정상적으로
+처리를 기대할 수 있다.
+*/
+
+/*
+		start()		         |			run()
+native 영역에서 새로운 Thread가 생성되며     |
+Thread가 시작되면 run() 메서드가 실행된다.   |	Thread가 생성되지 않으며 그냥 run() 메서드만 실행된다.
+				         |
+동일한 객체에서 두번이상 호출 시                | 
+IllegalThreadStateException 예외가 발생된다.  |	호출수에 제한없이 계속 호출할 수 있다.
+				         |
+멀티쓰레드로 동작한다.		         |	싱글쓰레드로 동작한다.
+
+*/
+
+
+  (2) Black-box방식
+     * Runnable 인터페이스를 구현하는 방법 ex) class 000 implements Runnable
+       (java.lang.Runnable 인터페이스를 implements 하여 만드는 것)
+     * 스레드를 Runnable객체로 만들게 되면 스레드를 상속받아 만드는 white-box방식에 비해 
+       어플리케이션의 유연성과 확장성을 보장받을 수 있게 됨
+
+     * Runnable로 스레드 만드는 방법
+       - class를 선언하고 Runnable 인터페이스를 implements한다.
+         class 000 implements Runnable
+      
+       - run() 메서드를 오버라이드하여 구현
+         @Override
+         public void run() {}
+ 
+       - Thread 객체를 생성하고, 생성자로 만든 객체를 넣어준다.
+         RunnableTest runnableTest1 = new RunnableTest();
+         Thread thread1 = new Thread(runnableTest1);
+      
+       - 만든 객체의 start() 메서드를 실행한다.
+         thread1.start(); 
+
+ex)
+class RunnableTest implements Runnable{
+	int num;
+	
+	public RunnableTest() {
+		// 0~99의 숫자중 하나의 값을 랜덤으로 지정합니다.
+		this.num = (int)(Math.random()*100);
+	}
+	
+	
+	@Override
+	public void run() {
+		// 이곳에 실행할 코드를 작성하시면 됩니다.
+		// 이 스레드는 자신의 번호를 3번 반복해서 출력합니다.
+		for(int i=0; i<3; i++) {
+			System.out.println("제 번호는  " + num + "입니다.");
+		}
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// 1. Runnable 인터페이스를 상속한 객체를 구현합니다.
+		RunnableTest runnableTest1 = new RunnableTest();
+		RunnableTest runnableTest2 = new RunnableTest();
+		RunnableTest runnableTest3 = new RunnableTest();
+		RunnableTest runnableTest4 = new RunnableTest();
+		RunnableTest runnableTest5 = new RunnableTest();
+		
+		// 2. Thread 객체의 생성자로 위 객체를 전달합니다.
+		Thread thread1 = new Thread(runnableTest1);
+		Thread thread2 = new Thread(runnableTest2);
+		Thread thread3 = new Thread(runnableTest3);
+		Thread thread4 = new Thread(runnableTest4);
+		Thread thread5 = new Thread(runnableTest5);
+		
+		thread1.start();
+		thread2.start();
+		thread3.start();
+		thread4.start();
+		thread5.start();
+	}
+}
+
+/*
+-실행결과-
+제 번호는 76입니다.
+제 번호는 70입니다.
+제 번호는 25입니다.
+제 번호는 35입니다.
+제 번호는 35입니다.
+제 번호는 35입니다.
+제 번호는 25입니다.
+제 번호는 70입니다.
+제 번호는 76입니다.
+제 번호는 70입니다.
+제 번호는 25입니다.
+제 번호는 35입니다.
+제 번호는 35입니다.
+제 번호는 76입니다.
+제 번호는 35입니다.
+*/
+
+
+3. Thread(스레드)의 우선순위 설정
+스레드를 여러개 제작하여 실행하면 여러 메서드를 병행적으로 실행할 수 있어서 
+프로세스의 성능을 높일 수 있지만, 스케줄러의 프로세스 실행 상황에 따라 예측 하기가 어렵다.
+스레드가 먼저 시작했다고 우선순위를 가지는 것도 아니고, 
+먼저 시작한 스레드가 더 늦게 끝날 수도 있다.
+또한 자원 상황에 따라 스레드가 실행되지 못하고 대기 상태로 남아있을 수도 있다.
+그렇기 때문에 스레드의 중요도에 따라 우선순위를 정하는 것이 필요하다.
+
+하지만 이 스레드의 우선순위는 다중 cpu 환경, 또는 멀티코어 환경에서는 무의미하다.
+우선순위를 정하고 싶다면 join() 메서드를 사용하는 것을 권장한다.
+
+  (1) 쓰레드의 스케줄링(Scheduling)과 우선순위 컨트롤
+      * 스케줄링에 사용되는 알고리즘의 기본원칙
+        - 우선순위가 높은 스레드의 실행을 우선한다.
+        - 동일한 우선순위의 스레드가 둘 이상 존재할 때는 CPU의 할당시간을 분배해서 실행한다.
+
+      * 스레드의 우선순위 : 가상머신에 의해서 우선적으로 실행되어야 하는 스레드의 순위
+	 	         가장 높은 우선순위는 정수 10으로, 가장 낮은 우선순위는 정수 1로 표현
+                                 우선순위 값은 상대적인 값이다.
+
+      * 우선 순위를 적용할 때는 직접 정수 값을 설정하는 것 보다는 Thread 클래스의
+        static final Field값을 이용하는 것이 바람직
+
+        쓰레드의 우선순위를 가져오는 메소드? getPriority()
+        쓰레드의 우선순위를 설정하는 메소드? setPriority()
+        쓰레드의 우선순위를 설정할 때 쓰는 상수는?	
+
+        Thread.MAX_PRIORITY    	 10
+        Thread.NORM_PRIORITY	  5 (기본값)
+        Thread.MIN_PRIORITY	 	  1
+
+
+4. Thread(스레드)의 상태 제어
+
+<쓰레드의 라이프 사이클(Life Cycle)>
+
+	New ------------ (start 메소드 호출 시)
+			| 
+			V
+			Runnable   	------------------> Blocked
+			|		<------------------
+			|		(스케쥴러는 Runnable 상태의 쓰레드 중
+	Dead <----------- 		 하나를 선택해 실행)
+	      (run 메소드 완료 시)
+
+  (1) New state
+      * 쓰레드 클래스가 키워드 new를 통해서 인스턴스화 된 상태
+      * 아직 실행을 시작하지 않은 새로 생성된 스레드
+      * 이 상태에서는 자바 가상머신에 의해 관리가 되는 쓰레드의 상태는 아니다. 
+        즉 운영체제 입장에서는 쓰레드라 부르기에는 이른 감이 있는 상태다. 
+        그러나 자바에서는 이 상태에서부터 쓰레드라 표현한다.
+
+  (2) Runnable state
+      * 쓰레드 인스턴스를 대상으로 start 메서드가 호출되었고 실행 중이거나
+        실행 준비가 완료되었지만 리소스 할당을 기다리는 상태
+        ( 모든 실행의 준비를 마치고, 스케줄러에 의해서 선택되어 실행될 수 있기만을 기다리는 상태)
+      * start 메서드가 호출된다고 해서 바로 run 메서드가 호출되는 것이 아님을 알 수 있다. 
+        Runnable 상태에 있다가, 스케줄러에 의해서 실행의 대상으로 선택이 되어야 
+        비로소 run 메서드가 처음 호출이 된다.
+
+  (3) Blocked state
+      * 실행 중인 스레드가 CPU의 할당이 필요치 않는 입출력 연산(sleep(), join() 등)을 하게 되면
+        CPU를 다른 스레드에게 양보하고, 본인은 'Blocked 상태'가 된다.
+        Blocked 상태에서는 스케줄러의 선택을 받을 수 없다.
+        다시 스케줄러의 선택을 받아서 실행이 되려면, Blcoked 상태에 놓이게 된 원인이 제거되어서, 
+        Runnable 상태로 돌아와야 한다. 입출력 작업(sleep() 등)으로 인해서 Blocked 상태가 되었다면, 
+        입출력 작업이 완료되면서 Runnable 상태가 된다.
+
+      * IO관련 상태 또는 synchronized를 통해 스레드 진행이 정지된 상태이다. 
+        스레드를 정지시킨 원인이 사라지면 스레드는 New state로 복귀한다
+  
+  (4) Dead state
+      * run() 메서드의 실행이 완료되어서 빠져나오게 되면, 해당 스레드는 'Dead 상태'가 된다.
+      * 스레드의 실행을 위해서 할당 받았던 메모리를 비롯해서 각종 스레드 관련 정보가 완전히
+        사라지는 상태이다.
+      * 한번 'Dead 상태'가 된 스레드는 다시 'Runnable 상태'가 되지 못한다.
+        (스레드의 실행을 위해 필요한 모든 것이 소멸되기 때문)

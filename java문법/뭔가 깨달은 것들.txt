@@ -1,0 +1,5 @@
+1. 웬만하면 배열을 쓸 것이면 String<->char 추천
+입출력하기가 용이
+int형은 출력시가 매우 불편
+
+2. 배열{key, value}  오름or내림차순?  Interface Comparable, Object.compareTo()
