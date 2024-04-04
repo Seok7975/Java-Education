@@ -1,0 +1,12 @@
+다음 소스코드의 실행결과가 주석과 같이 나올 수 있도록 add라는 메소드를 정의하시오.
+가변인수를 사용하는 방식과 메소드 오버로딩을 사용하는 방식 두가지로 작성하시오.
+
+class Test
+{
+	public static void main(String[] args)
+	{
+		System.out.println(add(5));	// 5
+		System.out.println(add(5, 10));		// 15
+		System.out.println(add(5, 10, 15));	// 30
+	}
+}
