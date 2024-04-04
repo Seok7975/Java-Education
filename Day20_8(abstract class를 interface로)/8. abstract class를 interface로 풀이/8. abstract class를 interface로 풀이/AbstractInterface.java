@@ -50,7 +50,6 @@ class PersonalNumberStorageImpl implements PersonalNumberStorage
 	}
 }
 
-
 class AbstractInterface
 {
 	public static void main(String[] args)
