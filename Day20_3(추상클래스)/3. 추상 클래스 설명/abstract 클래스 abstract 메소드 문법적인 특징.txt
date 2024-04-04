@@ -1,0 +1,30 @@
+1. 객체를 생성하기를 원하지 않는 다면 abstract class 로 선언.
+abstract class AAA
+{
+}
+
+AAA aaa = new AAA();	// 에러. 객체를 생성할 수 없다.
+
+2. abstract 메소드가 단 1개라도 존재한다면 
+그 클래스는 abstract class로 선언해야 한다.
+abstract class AAA
+{
+	public abstract void hi();
+}
+3. abstract 메소드가 있는 클래스를 상속한다면
+그 클래스도 abstract 클래스로 선언하거나,
+아니면 abstract 메소드를 몸통이 있는 형태의 온전한 메소드로
+메소드 오버라이딩 해줘야 된다.
+abstract class BBB extends AAA		// 1번째
+{
+	public abstract void hi();
+}
+
+class BBB extends AAA			// 2번째
+{
+	@Override
+	public void hi()
+	{
+		System.out.println("BBB hi");
+	}
+}
