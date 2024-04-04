@@ -1,0 +1,1 @@
+abstract class PersonalNumberStorage를 인터페이스로 바꿔서 구현하시오.
