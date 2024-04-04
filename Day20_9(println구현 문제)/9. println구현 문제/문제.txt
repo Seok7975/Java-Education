@@ -1,0 +1,5 @@
+System.out.println 오버로딩 된 메소드 중에 public void println(Object x)가 없다고 가정하고 폴더에 있는 ClassPrinter에 있는 class에 print 메소드를 만드시오.
+
+[실행결과]
+[x:1, y:2]
+[x:5, y:9]
