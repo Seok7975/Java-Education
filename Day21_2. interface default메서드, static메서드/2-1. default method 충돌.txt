@@ -1,0 +1,48 @@
+interface AAA{
+	default void hi() { System.out.println("AAA Hi"); }
+}
+interface BBB{
+	default void hi() { System.out.println("BBB Hi"); }
+}
+
+class CCC implements AAA, BBB
+{
+	
+}
+class Main
+{
+	public static void main(String[] args)
+	{
+		CCC ccc = new CCC();				
+	}
+}
+
+/*
+CCC에서 hi 메소드를 오버라이딩 안해서 에러
+Main.java:8: error: types AAA and BBB are incompatible;
+class CCC implements AAA, BBB
+^
+  class CCC inherits unrelated defaults for hi() from types AAA and BBB
+1 error
+*/
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+interface AAA{
+	default void hi() { System.out.println("AAA Hi"); }
+}
+interface BBB{
+	default void hi() { System.out.println("BBB Hi"); }
+}
+
+class CCC implements AAA, BBB
+{
+	public void hi() { System.out.println("CCC hi"); }
+}
+class Main
+{
+	public static void main(String[] args)
+	{
+		CCC ccc = new CCC();				
+	}
+}
