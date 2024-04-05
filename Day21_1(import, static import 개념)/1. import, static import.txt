@@ -1,0 +1,61 @@
+import 문의 선언
+모든 소스파일(.java)에서 import문은 package문 다음에, 그리고 클래스 선언문 이전에 위치해야 한다. import문은 package문과 달리 한 소스파일에 여러 번 선언할 수 있다.
+
+일반적인 소스파일(*.java)의 구성은 다음의 순서로 되어 있다.
+① package문
+② import문
+③ 클래스 선언
+
+import문을 선언하는 방법은 다음과 같다.
+
+import 패키지명.클래스명;
+또는
+import 패키지명.*;
+
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ArrayList;
+
+이처럼 import 문을 여러 번 사용하는 대신 아래와 같이 한 문장으로 처리할 수 있다.
+
+import java.util.*;
+
+한 패키지에서 여러 클래스를 사용하는 경우 클래스의 이름을 일일이 지정해 주는 것보다 '패키지명.*'과 같이 하는 것이 편리하다.
+ 하지만, import하는 패키지의 수가 많을 때는 어느 클래스가 어느 패키지에 속하는지 구별하기 어렵다는 단점이 있다.
+
+한 가지 더 알아두어야 할 것은 import문에서 클래스의 이름 대신 '*'을 사용하는 것이 하위 패키지의 클래스까지 포함하는 것은 아니라는 것이다.
+
+import java.util.*;
+import java.text.*;
+
+그래서 위의 두 문장 대신 다음과 같이 할 수는 없다.
+
+import java.*;
+
+static import문
+
+import 문을 사용하면 클래스의 패키지명을 생략할 수 있는 것과 같이 static import문을 사용하면 static 멤버를 호출할 때 클래스 이름을 생략할 수 있다. 특정 클래스의 static멤버를 자주 사용할 때 편리하다. 그리고 코드도 간결해진다.
+
+import static java.lang.Integer.*;	// Integer클래스의 모든 static메소드
+import static java.lang.Math.random;	// Math.random()만.
+import static java.lang.System.out;	// System.out을 out만으로 참조가능
+
+만일 위와 같이 static import문을 선언하였다면, 아래의 왼쪽 코드를 오른쪽 코드와 같이 간략히 할 수 있다.
+
+System.out.println(Math.random());    -> out.println(random());
+
+///////////////////////////////
+
+import static java.lang.System.out;
+import static java.lang.Math.*;
+
+class StaticImportEx1 {
+	public static void main(String[] args) {	
+		// System.out.println(Math.random());
+		out.println(random());
+
+		// System.out.println("Math.PI :"+Math.PI);
+		out.println("Math.PI :" + PI);
+	}
+}
