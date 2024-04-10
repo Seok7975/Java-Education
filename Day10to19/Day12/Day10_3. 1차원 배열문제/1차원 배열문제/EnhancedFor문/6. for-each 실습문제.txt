@@ -1,0 +1,3 @@
+다음을 for-each문을 활용하는 형태로 변경해 보자.
+public static int minValue(int[] arr)	{ ... }		// 최소값 반환
+public static int maxValue(int[] arr)	{ ... }		// 최대값 반환
