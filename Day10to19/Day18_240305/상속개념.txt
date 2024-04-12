@@ -1,0 +1,356 @@
+<class 자식클래스 extend 부모클래스>
+
+1. 상속을 받더라도 private는 참조 불가
+
+class AAA             => AAA() {} 자동으로 삽입
+{
+}
+
+class BBB extends AAA
+{
+}
+=>	BBB() 
+	{ 
+		super(); 
+	} //자동으로 삽입
+
+
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		AAA aaa =  new AAA();
+		BBB bbb = new BBB();
+		AAA a2 = new BBB();  // 원래는 안됨! 상속을 받았기에 가능
+		//상위클래스의 참조변수로 하위클래스의 객체 주소값을 참조할 수 있다.
+		//다형성
+		
+		BBB b2 = new AAA(); // 역은 문법적으로 안됨!!!!!!!!
+	}
+}
+
+
+모든클래스는 생성자를 반드시 갖고있어야한다!
+내가 생성자를 입력하지 않았다면 디폴트 생성자를 자동으로 삽입
+만들었다면 자동으로 디폴트값 삽입 x
+
+하위클래스의 생성자는 반드시 가장 먼저
+상위클래스의 생성자를 호출하거나 호출해주는 형태가 되어야한다
+(그렇지않으면 문법적을 오류!)
+
+
+2.
+class AAA
+{
+	AAA(int num)
+	{
+		System.out.println("AAA");
+	}
+}
+
+class BBB extends AAA
+{
+	BBB()
+	{
+		super(10);		//호출해주는게 없으므로 super(); 자동삽입
+		//무조건 가장 먼저!!!!!
+		System.out.println("BBB");
+	}
+}
+
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		AAA a2 = new BBB();
+	}
+}
+
+
+3.
+class AAA
+{
+	private int age;
+	AAA(int age)
+	{
+		this.age = age;
+	}
+}
+
+class BBB extends AAA
+{
+	private String name;
+	BBB(int age, String name)
+	{
+		super(age);
+		this.name = name;
+	}
+}
+
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		AAA a2 = new BBB();
+	}
+}
+
+4.
+class AAA
+{
+	public int age = 10;
+}
+
+class BBB extends AAA
+{
+	public String name= "Hong";
+}
+
+class CCC extends BBB
+{
+	public String company = "Samsung";
+}
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		AAA aaa = new BBB();	//O
+		BBB bbb = new CCC();	//O
+		AAA a2 = new CCC();	//O
+	}
+}
+	
+
+
+5.
+class AAA
+{
+	public void hi()
+	{
+		System.out.println("Hi");
+	}
+}
+
+class BBB extends AAA
+{
+	public void bye()
+	{
+		System.out.println("Bye");
+	}
+}
+
+class CCC extends BBB  (BBB는 CCC를 상속)
+{
+	public String good()
+	{
+		System.out.println("Good");
+	}	
+}
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		CCC ccc = new CCC();
+		ccc.hi();		//O
+		ccc.bye();		//O
+		ccc.good();	//O
+	}
+}
+
+6. 상속관계에서도 메소드 오버로딩이 된다
+class AAA
+{
+	public void hi()
+	{
+		System.out.println("void Hi");
+	}
+}
+
+class BBB extends AAA
+{
+	public void hi(int num)
+	{
+		System.out.println("int Hi");
+	}
+}
+
+class CCC extends BBB  (CCC는 BBB를 상속)
+{
+	public void hi(double num)
+	{
+		System.out.println("double hi");
+	}	
+}
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		CCC ccc = new CCC();
+		ccc.hi(5.5);		//O
+	}
+}
+
+7. 매소드 오버라이딩 : 상위 클래스에 있는 메소드를 하위 클래스가 재정의
+매소드 이름, 매개변수 형 개수 및 타입, 반환 타입이 같아야함
+
+class AAA
+{
+	public void hi()
+	{
+		System.out.println("void Hi");
+	}
+	public void bye()
+	{
+		System.out.println("AAA bye");
+	}
+}
+
+class BBB extends AAA
+{
+	public void hi(int num)
+	{
+		System.out.println("int Hi");
+	}
+	public void bye()
+	{
+		System.out.println("BBB bye");
+	}
+}
+
+class CCC extends BBB  (CCC는 BBB에 상속)
+{
+	public void hi(double num)
+	{
+		System.out.println("double hi");
+	}
+	public void bye()
+	{
+		System.out.println("CCC bye");
+	}
+}	
+
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		CCC ccc = new CCC();
+		ccc.bye();		
+	}
+}
+
+8. 오버로딩
+자바 컴파일러가 "AAA형 참조변수 aaa가 AAA class의 객체라" 생각한다.
+AAA가 BBB클래스 객체를 참조하고있으니까 BBB클래스를 참조하고있다는 것을 인지시켜주기위해
+형변환을 한다!
+
+class AAA
+{
+	public void hi()
+	{
+		System.out.println("Hi");
+	}
+}
+class BBB extends AAA
+{
+	public void bye()
+	{
+		System.out.println("bye");
+	}
+}
+class ABMain
+{
+	public static void main(String[] args)
+	{
+	
+		AAA ccc = new AAA();
+			new BBB();
+			new CCC();
+		((BBB)aaa).bye();
+	}
+}
+
+9. 오버라이딩 -> 상속을 받고있을 때 최종적으로 오버라이딩 된 것이 호출된다
+
+class AAA
+{
+	public void hi()
+	{
+		System.out.println("AAA hi");
+	}
+}
+
+class BBB extends AAA
+{
+	public void hi()
+	{
+		super.hi();
+		System.out.println("BBB hi");
+	}
+}
+
+class ABMain
+{
+	public static void main(String[] args)
+	{
+		BBB bbb = new BBB();
+		bbb.hi();  // "BBB hi"
+	}
+}
+
+10.자바는 단일상속만 가능(C++은 다중상속이 됨)
+
+class AAA{}
+class BBB{}
+class CCC extends AAA, BBB {} //X
+
+
+*
+메소드 오버로딩(Method Overloading)과 메소드 오버라이딩(Method Overriding)은
+객체 지향 프로그래밍(OOP)에서 중요한 개념입니다. 둘 다 메소드의 다형성을 구현하는데 사용되지만,
+각각의 특징과 차이가 있습니다.
+
+1. 메소드 오버로딩 (Method Overloading):
+메소드 오버로딩은 같은 클래스 내에서 동일한 메소드 이름을 가지지만 매개변수의 타입, 개수, 또는 순서가 다른 여러 메소드를 정의하는 것을 말합니다. 메소드 시그니처(메소드의 이름과 매개변수의 형식)가 다르기 때문에 컴파일러가 어떤 메소드를 호출해야 하는지 구별할 수 있습니다.
+
+예시:
+
+java
+Copy code
+class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    double add(double a, double b) {
+        return a + b;
+    }
+}
+2. 메소드 오버라이딩 (Method Overriding):
+메소드 오버라이딩은 부모 클래스에서 정의된 메소드를 자식 클래스에서
+동일한 시그니처로 다시 정의하는 것을 말합니다. 즉, 자식 클래스에서
+부모 클래스의 메소드를 재정의하여 사용하는 것입니다. 이렇게 하면 부모 클래스의 메소드 대신 자식 클래스의 메소드가 호출됩니다.
+
+예시:
+
+java
+Copy code
+class Animal {
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+차이점 요약:
+메소드 오버로딩: 같은 클래스 내에서 동일한 이름의 메소드를 여러 개 정의.
+ 매개변수의 타입, 개수, 순서 등이 달라야 함.
+
+메소드 오버라이딩: 부모 클래스에서 정의된 메소드를 자식 클래스에서 동일한 시그니처로
+다시 정의. 상속 관계에서 발생하며, 자식 클래스에서 부모 클래스의 메소드를 재정의하여 사용.
+
+둘 다 다형성을 구현하는데 사용되며, 코드의 가독성과 유지보수성을 높이는 데 도움을 줍니다.
