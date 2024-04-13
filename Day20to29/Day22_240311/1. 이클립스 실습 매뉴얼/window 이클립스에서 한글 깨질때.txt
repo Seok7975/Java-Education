@@ -1,0 +1,1 @@
+General - Workspace - Text file encoding Default(x-windows-949)

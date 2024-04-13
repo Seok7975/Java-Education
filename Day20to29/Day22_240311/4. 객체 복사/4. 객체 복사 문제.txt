@@ -1,0 +1,14 @@
+다음 클래스를 메인메소드가 있는 클래스를 만들고, 거기서 객체 복사를 해보자.
+
+public class Person{
+	private String name;
+	private int age;
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+	
+	public void show() {
+		System.out.println(name + " " + age);		
+	}
+}
