@@ -1,0 +1,117 @@
+1. 1.png 처럼 실행되도록 프로그램을 작성하시오.
+2. 다음은 5명의 학생의 국어, 영어, 수학 점수이다. 이것을 score라는 이름의 2차원 배열을 선언과 동시에 초기화하고, 2.png처럼 나오게 프로그래밍하자.
+100 100 100
+20 20 20
+30 30 30
+40 40 40
+50 50 50
+
+3. 사용자로부터 숫자 2개를 입력받아서(예시 11) 그 숫자의 좌표에 해당하는 값이 1이면 'O'를 출력, 아니면 'X'를 출력한다.
+숫자의 범위는 1부터9까지로 한다.
+3.png참조.
+		byte[][] shipBoard = {
+		  //  1  2  3  4  5  6  7  8  9
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0 }, // 1
+			{ 1, 1, 1, 1, 0, 0, 1, 0, 0 }, // 2
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0 }, // 3
+			{ 0, 0, 0, 0, 0, 0, 1, 0, 0 }, // 4
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // 5
+			{ 1, 1, 0, 1, 0, 0, 0, 0, 0 }, // 6
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0 }, // 7
+			{ 0, 0, 0, 1, 0, 0, 0, 0, 0 }, // 8
+			{ 0, 0, 0, 0, 0, 1, 1, 1, 0 }, // 9
+		};
+
+4. 1부터 25까지 순서대로 2차원 배열에 넣은 후, 섞는다.
+그리고 사용자로 부터 숫자를 입력 받으면 해당 숫자를 0으로
+바꿔서 출력한다.
+4.png 참고
+
+5.
+class AAA{}
+class BBB{}
+
+클래스 BBB가 클래스 AAA를 상속 받을려면?
+
+6. 하위 클래스의 생성자에서 가장 먼저 해줘야 되는 일은?
+
+7. 메소드 오버라이딩에 대해서 설명하시오.
+그리고 적절한 예시를 드시오.
+
+8. 모든 클래스의 최상위 클래스는?
+
+9. 다음 클래스에 적절한 생성자를 삽입해보자. 그리고 이의 확인을 위한 main 메소드도 적절히 정의해 보자.
+
+
+class Car	// 기본 연료 자동차
+{
+	int gasolineGauge;
+}
+
+class HybridCar extends Car	// 하이브리드 자동차
+{
+	int electricGauge;
+}
+
+class HybridWaterCar extends HybridCar		// 하이브리드 워터카
+{
+	int waterGauge;
+
+	public void showCurrentGauge()
+	{
+		System.out.println("잔여 가솔린 : " + gasolineGauge);
+		System.out.println("잔여 전기량 : " + electricGauge);
+		System.out.println("잔여 워터량 : " + waterGauge);
+	}
+}
+
+10. 폴더에 있는 InstanceOf.java를 instanceof 연산자를 사용하지 않는 형태로 변경하고자 한다. 즉 클래스의 상속관계를 그대로 유지하면서(물론 메소드는 추가할 수 있다. 상속 관계만 그대로 유지하면 된다), instanceof 연산자를 사용하지 않고도 동일한 실행결과를 보일 수 있어야 한다. 참고로 여러분에게 힌트가 될 수있도록, 변경되어야 할 wrapBox 메소드를 여기 제시하겠다.
+
+public static void wrapBox(Box box)
+{
+	box.wrap();
+}
+
+
+------------------------------------------------------------
+
+폴더내용
+
+class Box
+{
+	public void simpleWrap(){System.out.println("simple wrap");}
+}
+
+class PaperBox extends Box
+{
+	public void paperWrap() {System.out.println("paper wrap");}
+}
+
+class GoldPaperBox extends PaperBox
+{
+	public void goldWrap() {System.out.println("gold wrap");}
+}
+
+class InstanceOf
+{
+	public static void wrapBox(Box box)
+	{
+		if(box instanceof GoldPaperBox)
+			((GoldPaperBox)box).goldWrap();
+		else if(box instanceof PaperBox)
+			((PaperBox)box).paperWrap();
+		else
+			box.simpleWrap();
+	}
+	
+	public static void main(String[] args)
+	{
+		Box box1=new Box();
+		PaperBox box2=new PaperBox();
+		GoldPaperBox box3=new GoldPaperBox();
+		
+		wrapBox(box1);
+		wrapBox(box2);
+		wrapBox(box3);
+	}
+}
