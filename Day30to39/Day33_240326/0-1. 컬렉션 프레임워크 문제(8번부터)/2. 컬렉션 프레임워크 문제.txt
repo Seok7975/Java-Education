@@ -1,0 +1,108 @@
+1. HashSet과 LinkedList를 이용하여 로또번호 만들기.(정렬하여 출력)
+
+2. HashSet과 LinkedHashSet을 이용하여 5 * 5 빙고를 만들어 출력하자. 번호는 1이상 50이하로 하자.(HashSet으로 한번, LinkedHashSet으로 한번)
+
+3. HashSet 객체를 두 개를 만들고, 하나에는 1, 2, 3, 4, 5를 넣고
+다른 하나에는 4, 5, 6, 7, 8을 넣자.
+그리고 두 개의 합 집합, 교집합, 차집합을 구해서 출력하자.
+
+4. TreeSet을 이용하여 로또 번호 만들기.
+
+5. HashMap에 각가 key와 Value를
+"myId", "1234"
+"asdf", "1111"
+"asdf", "1234"
+를 저장하고 id와 password를 입력받자.
+그리고 id가 없으면 없다고 출력하고,
+id가 있고 비밀번호가 일치하면 일치한다고 출력하고, 일치하지 않으면 일치하지 않는다고 출력하자.
+
+6. HashMap에 각각 key와 value를 
+"김자바", 90
+"김자바", 100
+"이자바", 100
+"강자바", 80
+"안자바", 90
+을 입력하고
+각각의 이름과 점수를 출력하자.
+
+그리고 총점, 평균, 최고점, 최저점을 출력하자.
+
+7. 다음 메인 메소드와 출력 결과를 보고 필요한 메소드를 완성하시오.
+
+import java.util.*;
+
+class HashMapEx3 {
+	static HashMap phoneBook = new HashMap();
+
+	public static void main(String[] args) {
+		addPhoneNo("친구", "이자바", "010-111-1111");
+		addPhoneNo("친구", "김자바", "010-222-2222");
+		addPhoneNo("친구", "김자바", "010-333-3333");
+		addPhoneNo("회사", "김대리", "010-444-4444");
+		addPhoneNo("회사", "김대리", "010-555-5555");
+		addPhoneNo("회사", "박대리", "010-666-6666");
+		addPhoneNo("회사", "이과장", "010-777-7777");
+		addPhoneNo("세탁", "010-888-8888");
+
+		printList();
+	} // main
+}
+
+실행 결과
+
+* 기타[1]
+세탁 010-888-8888
+
+ * 친구[3]
+이자바 010-111-1111
+김자바 010-222-2222
+김자바 010-333-3333
+
+ * 회사[4]
+이과장 010-777-7777
+김대리 010-444-4444
+김대리 010-555-5555
+박대리 010-666-6666
+
+8.다음과 같이 실행 결과가 나오도록 하자.
+import java.util.*;
+
+class HashMapEx4 {
+	public static void main(String[] args) {
+		String[] data = { "A","K","A","K","D","K","A","K","K","K","Z","D" };
+
+		HashMap map = new HashMap();
+	}
+}
+
+실행결과 
+
+A : ### 3
+D : ## 2
+Z : # 1
+K : ###### 6
+
+9. 다음 실행결과를 보고 main메소드를 완성하시오. 필요하다면 추가적인 메소드랑 클래스도 만드시오.
+
+
+class TreeMapEx1 {
+	public static void main(String[] args) {
+		String[] data = { "A","K","A","K","D","K","A","K","K","K","Z","D" };
+
+		TreeMap map = new TreeMap();
+	}
+}
+
+실행결과
+
+= 기본정렬 =
+A : ### 3
+D : ## 2
+K : ###### 6
+Z : # 1
+
+= 값의 크기가 큰 순서로 정렬 =
+K : ###### 6
+A : ### 3
+D : ## 2
+Z : # 1
