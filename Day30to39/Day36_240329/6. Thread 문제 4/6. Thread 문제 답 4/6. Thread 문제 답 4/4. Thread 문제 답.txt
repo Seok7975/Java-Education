@@ -1,0 +1,203 @@
+동기화(Synchronization)
+9. 문자열이 있는 신문 클래스
+신문작가(쓰레드)는 신문을 쓰고
+독자(쓰레드)는 신문을 읽는다.
+
+독자 실행.
+작가 실행.
+
+class NewsPaper
+{
+	String todayNews;
+	
+	public void setTodayNews(String news)
+	{
+		todayNews=news;
+	}
+	
+	public String getTodayNews()
+	{
+		return todayNews;
+	}
+}
+
+class NewsWriter extends Thread
+{
+	NewsPaper paper;
+	
+	public NewsWriter(NewsPaper paper)
+	{
+		this.paper=paper;
+	}
+	public void run()
+	{
+		paper.setTodayNews("자바의 열기가 뜨겁습니다.");
+	}
+}
+
+class NewsReader extends Thread
+{
+	NewsPaper paper;
+	
+	public NewsReader(NewsPaper paper)
+	{
+		this.paper=paper;
+	}
+	public void run()
+	{
+		System.out.println("오늘의 뉴스: "+paper.getTodayNews());
+	}
+}
+
+class NewsPaperStory
+{
+	public static void main(String[] args)
+	{
+		NewsPaper paper=new NewsPaper();
+		NewsReader reader=new NewsReader(paper);
+		NewsWriter writer=new NewsWriter(paper);
+
+		reader.start();
+		writer.start();
+
+		try
+		{
+			reader.join();
+			writer.join();
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+동기화는 쓰레드의 접근 순서(방식)을 컨트롤한다는 의미이다.
+앞서 보인 동기화는 순서에 상관 없이, 쓰레드의 동시 접근만을 막는 동기화였다. 그러나 쓰레드의 실행
+순서를 조절하는(결정하는) 것도 동기화의 범주에 포함된다.
+
+"쓰레드의 실행순서는 소스코드가 나열된 순서와 다를 수 있다."
+
+쓰레드의 실행순서는 예측이 불가능하다. 때문에 소스코드의 나열 순서를 가지고 쓰레드의 실행순서를 예측하는 것은 매우 어리석은 짓이다. 따라서 우리는 소스코드의 나열순서를 정리하는 방법이 아닌, 보다 확실한 방법으로 쓰레드의 실행순서를 컨트롤해야 한다.
+
+
+A쓰레드가 먼저 생성되었지만 늦게 생성된 B쓰레드가 먼저 실행되는 상황의 예
+A 쓰레드와 B 쓰레드는 우선순위가 동일하다. 이러한 상황에서 A 쓰레드가 먼저 생성되고, 이어서 B 쓰레드가
+생성되었다. 그리고는 먼저 생성된 A 쓰레드의 run 메소드가 호출되었는데, 그 순간 우선순위가 높은 C 쓰레드가
+등장하여, A 쓰레드는 C 쓰레드에게 실행의 기회를 넘기고 말았다. 결국 A 쓰레드의 run 메소드는 하나도 
+실행되지 않은 상태가 되었다. 이어서 C 쓰레드는 종료되고, 이번에는 B 쓰레드의 run 메소드가 호출 및 실행되었다.
+결과적으로 먼저 생성된 A 쓰레드보다 나중에 생성된 B 쓰레드가 먼저 실행되었다. 그리고 이는 하나의 
+예일뿐, 보다 다양한 상황에서 이와 유사한 일은 얼마든지 쉽게 일어날 수 있다.
+
+10. 쓰레드를 기다리게 하는 메소드의 원형
+public final void wait() throws InterruptedException
+Object 클래스
+11. 하나의 쓰레드만 깨우는 메소드의 원형
+public final void notify()
+Object 클래스
+12. 모든 쓰레드를 깨우는 메소드의 원형
+public final void notifyAll()
+
+13. 9번문제를 동기화가 가능한 상태로 수정하자.(독자 두명 생성. 실행)
+
+class NewsPaper
+{
+	String todayNews;
+	boolean isTodayNews=false;
+	
+	public void setTodayNews(String news)
+	{
+		todayNews=news;
+		isTodayNews=true;
+		
+		synchronized(this)
+		{
+			notifyAll();		// 13행 모두 일어나세요
+		}
+	}
+	
+	public String getTodayNews()
+	{
+		if(isTodayNews==false)
+		{
+			try
+			{
+				synchronized(this)
+				{
+					wait();	// 25행 한숨 자면서 기다리겠습니다.
+				}
+			}
+			catch(InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return todayNews;
+	}
+}
+
+class NewsWriter extends Thread
+{
+	NewsPaper paper;
+	
+	public NewsWriter(NewsPaper paper)
+	{
+		this.paper=paper;
+	}
+	public void run()
+	{
+		paper.setTodayNews("자바의 열기가 뜨겁습니다.");
+	}
+}
+
+class NewsReader extends Thread
+{
+	NewsPaper paper;
+	
+	public NewsReader(NewsPaper paper)
+	{
+		this.paper=paper;
+	}
+	public void run()
+	{
+		System.out.println("오늘의 뉴스: "+paper.getTodayNews());
+	}
+}
+
+class SyncNewsPaper
+{
+	public static void main(String[] args)
+	{
+		NewsPaper paper=new NewsPaper();
+		NewsReader reader1=new NewsReader(paper);		// 71행
+		NewsReader reader2=new NewsReader(paper);		// 72행
+		NewsWriter writer=new NewsWriter(paper);		// 73행
+
+		try
+		{
+			reader1.start();
+			reader2.start();
+			
+			Thread.sleep(1000);			
+			writer.start();
+	
+			reader1.join();
+			reader2.join();
+			writer.join();
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+"wait와 notifyAll(notify) 메소드는 동기화 처리를 해서, 한 순간에 하나의 쓰레드만 호출이 가능하도록 해야 한다."
+
+위의 문장은, 두 메소드 wait와 notifyAll(notify)이 서로 다른 두 쓰레드에 의해서 동시에 각각 호출되는 것 조차 허용되지 않아야 함을 뜻하는 것이다. 위의 두 메소드는 동시에 호출되면 문제가 생길 수 있는 민감한 성격의 메소드이다. 따라서 동기화 블록 또는 동기화 메소드를 이용해서 메소드 호출문장을 동기화 처리해야 한다. 위 예제에서는 동기화 블록을 기반으로 동기화 처리를 하고 있다.
+그리고 wait 메소드는 연이은 호출이 가능함에 주목해야 한다.(동시 호출이라고 하지 않았다.) 예를 들어서 A 쓰레드가 위 예제 25행에 있는 wait 메소드를 호출하면서 잠에 들었다고 가정해보자. 이 때 wait 메소드를 호출한 지점에서 잠이 든 것이기 때문에, 이 문장을 감싸는 동기화 블록을 완전히 벗어난 것은 아니다. 그러나 잠이 들면서 동기화 블록에 대한 경계까지도 완전히 풀어버리기 때문에(더 이상 실행중인 것이 아니라 그냥 잠이 들어버린 것이므로), 다른 쓰레드가 이 동기화 블록에 접근하는 것은 허용이 된다. 즉 다른 쓰레드에 의해서 25행의 wait 메소드는 또 다시 호출이 가능하다.
+그럼 지금 설명한 내용을 바탕으로 위 예제를 다시 한번 관찰하자. 특히 71, 72행에서 데이터를 가져가기 위한 두 개의 쓰레드가 생성되어, 순서대로 wait 메소드를 호출하면서 잠이 들어버리는 상황을 연상해보자. 물론 이 두 쓰레드는 73행에서 생성되는 쓰레드의 notifyAll 메소드 호출을 통해 잠에서 깨어나게 된다. 참고로 notify 메소드는 잠이 든 여러 쓰레드들 중 하나만 깨울 때 사용되는 메소드이고, notifyAll 메소드는 잠이 든 모든 쓰레드들을 함께 깨울 때 사용되는 메소드이다. 13행의 메소드 호출문을 notify 호출문으로 변경해서 실행해 보면, 이 두 메소드의 차이를 쉽게 파악할 수 있을 것이다.
+
+* wait와 notifyAll(notify) 메소드는 동기화 처리를 해서, 한 순간에 하나의 쓰레드만 호출이 가능하도록 해야 한다.
+* notify 메소드는 잠이 든 여러 쓰레드들 중 하나만 깨울 때 사용되는 메소드이고, notifyAll 메소드는 잠이 든 모든 쓰레드들을 함께 깨울 때 사용되는 메소드이다.
