@@ -1,0 +1,189 @@
+13. ('필터 스트림')은 그 자체로 파일과 같은 소스로부터 데이터를 읽는 기능은 지니고 있지 않다. 다만 입력 스트림으로부터 읽혀진 데이터를 다양하게 가공하는 기능만 있을 뿐이다. 이러한 필터 스트림도 다음과 같이 두 부류로 나뉜다.
+* 필터 입력 스트림		입력 스트림에 연결하는 필터 스트림
+* 필터 출력 스트림		출력 스트림에 연결하는 필터 스트림
+
+14. int, double과 같은 기본 자료형 데이터를 읽고 쓰는 게 생각만큼 간단한 일은 아니다.
+하지만 필터 스트림인 (DataInputStream)과 (DataOutputStream)을 
+각각 입력 스트림과 출력 스트림에 연결하면, 기본 자료형 데이터의 입출력은 생각만큼 
+간단한 일이 되어 버린다.
+
+15. 정수 275와 실수 45.79를 파일에 저장하고 다시 읽어들여 출력해보자.
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public class IOTest {
+
+	public static void main(String[] args)
+	{
+		try(OutputStream out = new FileOutputStream("data.bin");
+			DataOutputStream filterOut=new DataOutputStream(out))
+		{
+			filterOut.writeInt(275);
+			filterOut.writeDouble(45.79);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try(InputStream in=new FileInputStream("data.bin");
+				DataInputStream filterIn=new DataInputStream(in)){
+			int num1=filterIn.readInt();
+			double num2=filterIn.readDouble();
+			System.out.println(num1);
+			System.out.println(num2);			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+16. 필터 스트림은 다음 클래스를 상속한다.
+* 필터 입력 스트림 클래스 - (FilterInputStream) 클래스를 상속한다.
+* 필터 출력 스트림 클래스 - (FilterOutputStream) 클래스를 상속한다.
+
+FilterInputStream 클래스와 FilterOutputStream 클래스도 각각 InputStream과 OutputStream을 상속하나, 최상위 클래스는 아니다.
+
+17. 버퍼링 기능을 제공하는 필터 스트림
+* BufferedInputStream		버퍼 필터 입력 스트림
+* BufferedOutputStream		버퍼 필터 출력 스트림
+
+18. 버퍼 필터 스트림을 이용하여 파일 복사하는 프로그램 작성. 복사된 바이트도 출력해보자.
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class JavaIO18 {
+
+	public static void main(String[] args) {
+		String inFileName = "Grit.txt";
+		String outFileName = "cpy.txt";
+		int readByte = 0;
+		int byteCnt = 0;
+		try(FileInputStream in = new FileInputStream(inFileName);
+				BufferedInputStream bIn = new BufferedInputStream(in);
+				FileOutputStream out = new FileOutputStream(outFileName);
+				BufferedOutputStream bOut = new BufferedOutputStream(out))
+		{
+			while( (readByte=bIn.read()) != -1)
+			{
+				bOut.write(readByte);
+				byteCnt++;
+			}
+			System.out.println(byteCnt+ "byte의 파일 복사가 완료되었습니다.");
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println("파일이 존재하지 않습니다.");
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+위 예제에서는 버퍼의 크기를 지정하지 않았기 때문에 디폴트 크기의 버퍼(디폴트 크기는 2MB이다)가 만들어지지만, 다음의 생성자들을 이용하면 버퍼의 크기도 여러분이 원하는 대로 지정할 수 있다.
+public BufferedInputStream(InputStream in, int size)
+public BufferedOutputStream(OuputStream out, int size)
+
+19. BufferedInputStream 데이터를 읽어 들이는 메소드 두개는?
+public int read() throws IOException	//byte단위
+public int read(byte[] b, int off, int len) throws IOException	//byte[]단위
+
+20. 데이터의 중요도가 높거나, 버퍼가 꽉차지 않아도 출력 스트림을 통해서 파일에 저장해야 할 데이터가 존재한다면 다음의 메소드를 호출해야 한다.
+public void flush() throws IOException
+
+21. 파일에 275와 45.79를 저장하는데, 버퍼링 기능도 추가하자. 그리고 다시 저장한 것을 읽어 들이자.
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class JavaIO21 {
+
+	public static void main(String[] args) {
+		String fileName="fbdTest.txt";
+
+		try(FileOutputStream out = new FileOutputStream(fileName);
+			BufferedOutputStream bOut = new BufferedOutputStream(out);
+			DataOutputStream dataOut = new DataOutputStream(bOut))
+		{
+			dataOut.writeInt(275);
+			dataOut.writeDouble(45.79);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try(FileInputStream in = new FileInputStream(fileName);		
+			BufferedInputStream bIn = new BufferedInputStream(in);
+			DataInputStream dataIn = new DataInputStream(bIn))
+		{
+			int intData = 0;
+			double dblData = 0;
+			intData = dataIn.readInt();
+			dblData = dataIn.readDouble();
+			System.out.println(intData + " " + dblData);	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+22. 성능차이를 체크해보자. 처음에는 12.345를 중첩된 반복문 100000000 번씩을 통해 저장하고, 두번째로는 같은 동작을 하는데 버퍼링 필터 스트림이 추가된 상태로 체크해보자. 그래서 두 개의 성능차이를 비교해보자.
+
+import java.io.*;
+
+class DataBufferedFilterPerformance
+{
+	public static void performanceTest(DataOutputStream dataOut)
+												throws IOException
+	{
+		long startTime=System.currentTimeMillis();
+		for(int i=0; i<10000; i++)
+			for(int j=0; j<10000; j++)
+				dataOut.writeDouble(12.345);
+		
+		dataOut.flush();
+		long endTime=System.currentTimeMillis();	
+		System.out.println("경과시간: "+ (endTime-startTime));	
+	}
+	
+	public static void main(String[] args) throws IOException
+	{
+		OutputStream out1=new FileOutputStream("data1.bin");
+		DataOutputStream dataOut=new DataOutputStream(out1);
+		performanceTest(dataOut);
+		dataOut.close();
+		
+		OutputStream out2=new FileOutputStream("data2.bin");
+		BufferedOutputStream bufFilterOut
+					=new BufferedOutputStream(out2, 1024*10);
+		DataOutputStream dataBufOut=new DataOutputStream(bufFilterOut);
+		performanceTest(dataBufOut);
+		dataBufOut.close();
+	}
+}
