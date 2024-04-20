@@ -1,0 +1,6 @@
+1. LambdaTest.java 소스코드의 익명 클래스를 람다로 바꾸시오.
+2. LambdaTest2.java 소스코드의 익명 클래스를 람다로 바꾸시오.
+3. LambdaTest3.java 소스코드의 익명 클래스를 람다로 바꾸시오.
+4. LambdaTest4.java 소스코드의 익명 클래스를 람다로 바꾸시오.
+5. LambdaTest5.java 소스코드의 익명 클래스를 람다로 바꾸시오.
+6. LambdaTest6.java 소스코드의 익명 클래스를 람다로 바꾸시오.

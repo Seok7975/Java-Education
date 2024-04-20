@@ -1,0 +1,111 @@
+0. 실행결과가 다음과 같이 나오도록 코드를 구현하시오.
+
+[실행결과] 
+이자바,1,4,70,90,70,230,76.7
+남궁성,1,2,90,70,80,240,80.0
+김자바,1,3,80,80,90,250,83.3
+홍길동,1,1,100,100,100,300,100.0
+[60~69] :0
+[70~79] :1
+[80~89] :2
+[90~100] :1
+
+class Student{
+	String name;
+	int ban;
+	int no;
+	int kor;
+	int eng;
+	int math;
+	Student(String name, int ban, int no, int kor, int eng, int math) {
+		this.name = name;
+		this.ban = ban;
+		this.no = no;
+		this.kor = kor;
+		this.eng = eng;
+		this.math = math;
+	}
+}
+
+1. 다음 메인메소드를 보고 실행 결과가 다음과 같이 나올 수 있도록 코딩하시오.
+(참고. Student 생성자에는 이름, 반, 번호, 국어, 영어, 수학이 순서대로 들어가 있다.)
+(실행결과는
+홍길동,1,3,100,100,100,300,100.0,1,1
+이름, 반, 번호, 국어, 영어, 수학, 총점, 평균, 전체등수, 반등수)
+
+	public static void main(String[] args) {
+		ArrayList<Student> list = new ArrayList<Student>();
+		list.add(new Student("이자바",2,1,70,90,70)); 
+		// 이름, 반, 번호, 국어, 영어, 수학
+		list.add(new Student("안자바",2,2,60,100,80)); 
+		list.add(new Student("홍길동",1,3,100,100,100)); 
+		list.add(new Student("남궁성",1,1,90,70,80)); 
+		list.add(new Student("김자바",1,2,80,80,90));
+		calculateSchoolRank(list);
+		calculateClassRank(list);
+		Iterator<Student> it = list.iterator();
+		while(it.hasNext())
+			System.out.println(it.next());
+	}
+
+[실행결과] 
+홍길동,1,3,100,100,100,300,100.0,1,1
+김자바,1,2,80,80,90,250,83.3,2,2
+남궁성,1,1,90,70,80,240,80.0,3,3
+안자바,2,2,60,100,80,240,80.0,3,1
+이자바,2,1,70,90,70,230,76.7,5,2
+
+2. 각 Player들의 점수를 계산하고, 점수가 제일 높은 사람을 출력하는 코드이다. TreeMap의 정렬기준을 점수가 제일 높은 사람 부터 내림차순이 되도록 아래의 메인 메소드를 참고하여 나머지 코드들을 완성하시오. 단, 동점자 처리는 하지 않는다.
+[실행결과] 
+[타짜] 7,2 1009 
+[고수] 2,5 1007 
+[물주] 1,7 1008 
+[중수] 10,4 2020 
+[하수] 9,6 1005 
+
+1위는 [중수] 10, 4입니다.
+
+	public static void main(String args[]) throws Exception
+	{
+		SutdaDeck deck = new SutdaDeck();
+		deck.shuffle();
+		Player[] pArr = {
+				new Player("타짜", deck.pick(), deck.pick()), 
+				new Player("고수", deck.pick(), deck.pick()), 
+				new Player("물주", deck.pick(), deck.pick()), 
+				new Player("중수", deck.pick(), deck.pick()), 
+				new Player("하수", deck.pick(), deck.pick())
+		};
+	}
+
+족보는 다음과 같다.
+
+카드1 카드2 점수
+K K 4000
+10 10 3100
+9 9 3090
+8 8 3080
+7 7 3070
+6 6 3060
+5 5 3050
+4 4 3040
+3 3 3030
+2 2 3020
+1 1 3010
+- - -
+카드1 카드2 점수
+1 2 2060
+2 1 2060
+1 4 2050
+4 1 2050
+1 9 2040
+9 1 2040
+1 10 2030
+10 1 2030
+4 10 2020
+10 4 2020
+4 6 2010
+6 4 2010
+
+해당하는 등급이 없으면, 아래의 공식으로 점수를 계산한다.
+(c1.num + c2.num) % 10 + 1000

@@ -1,0 +1,222 @@
+24. 자바는 (유니코드)를 기반으로 문자를 표현한다. 
+이렇듯 정해진 규칙을 기준으로 문자를 수(number)의 형태로 표현하는 것을 가리켜 '인코딩(encoding)'이라 한다. 
+예를 들어서 다음의 문장도 일종의 인코딩이다. 
+문자 A와 문자 B를 2바이트 유니코드 값으로 변환해서(인코딩 해서), 각각ch1과 ch2에 저장하기 때문이다.
+char ch1='A';
+char ch2='B';
+
+Windows는 문자의 종류에 따라서 다음과 같이 인코딩 한다.
+* 영문과 특수문자 	1바이트 데이터로 인코딩
+* 한글 		2바이트 데이터로 인코딩
+
+Windows의 문자표현 방식을 기준으로 문자 A와 문자 B를 저장해 보자. 
+참고로 Windows에서는 문자 A를 1바이트 정수 65, 문자 B를 1바이트 정수 66으로 표현한다(인코딩 한다).
+
+public static void main(String[] args) throws IOException
+{
+	OutputStream out = new FileOutputStream("hyper.txt");
+	out.write(65);
+	out.write(66);
+	out.close();
+}
+
+위의 코드에서는 파일의 출력 스트림에 정수 65와 66을 저장하고 있다. 
+OutputStream의 write 메소드는 1바이트 단위로 데이터를 저장하므로, 
+1바이트 형태로 65와 66이 저장된다.
+(65와 66은 1바이트로 표현이 가능한 숫자이기 때문에 저장과정에서 상위 3바이트가 잘려나가도 문제가 없다).
+
+25. [문자 스트림이 별도로 존재하는 이유]
+문자 스트림과 관련해서 가장 중요한 질문 하나를 하고자 한다.
+"바이트 스트림이 존재함에도 불구하고, 문자 스트림이 별도로 필요한 이유는 무엇인가?"
+"운영체제의 기본 인코딩 방식으로의 인코딩을 자동화하기 위해서!"
+
+26. 문자 입력 스트림과 문자 출력 스트림의 최상위 클래스는?
+Reader, Writer
+
+27. 문자 단위 파일 입력 스트림과 출력 스트림은 각각 다음과 같다.
+
+FileReader, FileWriter
+
+
+28. Reader의 대표적인 메소드는?
+* public int read() throws IOException
+* public abstract int read(char[] cbuf, int off, int len) throws IOException
+
+첫 번째 메소드는 파일로부터 읽어 들인 문자 하나를 반환한다. 
+반면 두 번째 메소드는 최대 len의 개수만큼 문자를 읽어 들여서, 
+cbuf로 전달된 배열의 인덱스 위치 off에서부터 문자를 저장한다. 
+그리고 실제로 읽어 들인 문자의 수를 반환한다. 
+물론 더 이상 읽어 들일 문자가 존재하지 않는다면 두 메소드 모두 -1을 반환한다. 
+
+29. Writer의 대표적인 메소드는?
+
+* public void write(int c) throws IOException
+* public abstract void write(char[] cbuf, int off, int len) throws IOException
+
+첫 번째 메소드는 파일에 하나의 문자를 저장한다. 
+자바 프로그램에서는 문자가 2바이트로 표현되므로, 
+인자로 전달된 4바이트 데이터 중에서(매개변수 형이 int이므로) 상위 2바이트는 무시가 된다. 
+그렇다고 파일에 2바이트가 저장된다고 판단하면 곤란하다.
+그리고 두 번째 메소드는 cbuf로 전달된 배열의 인덱스 위치 off에서부터 
+len개의 문자를(최대 len개가 아닌, 그냥 len개이다) 파일에 저장한다.
+
+30. hyper.txt라는 파일에 문자 'A'와 문자 'B'를 저장하자.
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+public class JavaIO24 {
+	public static void main(String[] args) throws IOException
+	{
+		OutputStream out = new FileOutputStream("hyper.txt");
+		//만약 추가하고싶다면 생성자에 true 추가
+		//OutputStream out = new FileOutputStream("hyper.txt", true);
+		out.write('A');
+		out.write('B');
+		out.close();
+	}
+}
+
+위에 소스코드를 문자스트림을 이용하여 다시 짜면
+import java.io.*;
+
+class FileWriterStream
+{
+	public static void main(String[] args) throws IOException
+	{
+		char ch1='A';
+		char ch2='B';
+		
+		Writer out=new FileWriter("hyper.txt");
+		out.write(ch1);
+		out.write(ch2);
+		out.close();
+	}
+}
+
+
+31. 30번에서 출력한 데이터를 읽어들여서 모니터에 출력해보자.
+
+import java.io.*;
+
+class FileReaderStream
+{
+	public static void main(String[] args) throws IOException
+	{
+		char[] cbuf=new char[10];
+		int readCnt;
+		
+		Reader in=new FileReader("hyper.txt");
+		readCnt=in.read(cbuf, 0, cbuf.length);
+		for(int i=0; i<readCnt; i++)
+			System.out.println(cbuf[i]); //ABABAB
+		
+		in.close();
+	}
+}
+
+32. 문자 스트림의 입출력 버퍼 필터 스트림은?
+BufferedReader, BufferedWriter
+
+33. 버퍼 필터 스트림의 문자열 입출력 기능을 담당하는 클래스와 메소드는?
+
+* 문자열의 입력
+BufferedReader 클래스의 메소드
+public String readLine() throws IOException
+
+* 문자열의 출력
+Writer 클래스의 메소드
+public void write(String str) throws IOException
+
+34. String.txt에다가 다음 내용을 출력하시오.
+
+박지성 - 메시 멈추게 하는데 집중하겠다.
+올 시즌은 나에게 있어 최고의 시즌이다.
+팀이 승리하는 것을 돕기 위해 최선을다하겠다.
+환상적인 결승전이 될 것이다.
+
+기사 제보 및 보도자료
+press@goodnews.co.kr
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Test8 {
+	public static void main(String[] args) {
+
+		try(BufferedWriter out = new BufferedWriter(new FileWriter("String.txt"))){
+			out.write("박지성 - 메시 멈추게 하는데 집중하겠다.");
+			out.newLine();
+			out.write("올 시즌은 나에게 있어 최고의 시즌이다.");
+			out.newLine();
+			out.write("팀이 승리하는 것을 돕기 위해 최선을다하겠다.");
+			out.newLine();
+			out.write("환상적인 결승전이 될 것이다.");
+			out.newLine();
+			out.newLine();
+			out.write("기사 제보 및 보도자료");
+			out.newLine();
+			out.write("press@goodnews.co.kr");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+35. 34번에서 만든 파일을 모니터에 출력해보자.
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class JavaIO35 {
+	public static void main(String[] args) {
+		String fileName = "String.txt";
+		String str = null;
+
+		try(BufferedReader br = new BufferedReader(new FileReader(fileName))){
+			
+			while( (str = br.readLine()) != null)
+			{
+				System.out.println(str);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+36. 문자 필터 스트림 (PrintWriter)이 제공하는 기능
+"다양한 형태의 데이터를 문자열의 형태로 출력하거나(println), 문자열의 형태로 조합하여 출력한다(printf)."
+PrintStream 은 바이트 스트림이다. 그럼에도 불구하고 문자 단위로(문자열 단위로) 데이터를 출력한다.이러한 이유로 이후의 자바 버전에서는 PrintStream를 개선시커서 PrintWriter라는 클래스를 정의하였고, 이는 Writer 클래스를 상속하는 문자 필터 스트림으로 정의하였다.
+* System.out이 PrintStream임을 기억하고, 이 이상으로 PrintStream을 활용하지 않는다.
+* printf, println등 문자열 단위의 출력이 필요하다면 반드시 PrintWriter를 사용한다.
+
+37. PrintWriter를 이용하여 다음 내용을 "printf.txt"에 출력하자
+
+제 나이는 %d살 입니다. 24
+저는 자바가 좋습니다.
+특히 I/O 부분에서 많은 매력을 느낍니다.
+
+import java.io.*;
+
+class PrintWriterStream
+{
+	public static void main(String[] args) throws IOException
+	{
+		PrintWriter out=
+			new PrintWriter(new FileWriter("printf.txt"));
+		
+		out.printf("제 나이는 %d살 입니다.", 24);
+		out.println("");
+		
+		out.println("저는 자바가 좋습니다.");
+		out.print("특히 I/O 부분에서 많은 매력을 느낍니다.");
+		out.close();
+	}
+}
