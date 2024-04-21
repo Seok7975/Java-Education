@@ -1,0 +1,41 @@
+1. main 쓰레드의 이름을 출력해 보자.
+
+2. 실행 결과가 다음과 같이 나오도록 람다를 완성하자.
+
+class MakeThreadMultiDemo {
+    public static void main(String[] args) {
+        Runnable task1 = /* 람다식 */
+
+        Thread t1 = new Thread(task1);
+        t1.start();
+    }
+}
+
+/*
+//실행 결과
+0 2 4 6 8 10 12 14 16 18 
+*/
+
+3. 다음 task를 쓰레드풀을 생성한 후에 그 쓰레드풀을 이용해서 실행하자.
+그리고 쓰레드 풀을 소멸하도록 하자.
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+
+class ExecutorsDemo {
+    public static void main(String[] args) {
+        Runnable task = () -> {     // 쓰레드에게 시킬 작업
+            int n1 = 10;
+            int n2 = 20;
+            String name = Thread.currentThread().getName();
+            System.out.println(name + ": " + (n1 + n2));
+        };
+        
+
+    }
+}
+
+4.  쓰레드풀을 만들고,
+Callable<V> 인터페이스를 기반으로 1부터 10까지 더한 값을 반환 받도록 코드를 작성하자.
+
+5. ArrayList의 동기화 처리 예시를 작성하자.

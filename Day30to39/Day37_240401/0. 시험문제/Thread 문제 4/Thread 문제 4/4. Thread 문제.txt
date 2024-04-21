@@ -1,0 +1,16 @@
+9. 문자열이 있는 신문 클래스
+신문작가(쓰레드)는 신문을 쓰고
+독자(쓰레드)는 신문을 읽는다.
+
+독자 실행.
+작가 실행.
+
+10. 쓰레드를 기다리게 하는 메소드의 원형
+public final void wait() throws InterruptedException
+
+11. 하나의 쓰레드만 깨우는 메소드의 원형
+public final void notify()
+12. 모든 쓰레드를 깨우는 메소드의 원형
+public final void notifyAll()
+
+13. 9번문제를 동기화가 가능한 상태로 수정하자.(독자 두명 생성. 실행)
