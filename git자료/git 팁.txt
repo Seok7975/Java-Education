@@ -45,6 +45,7 @@ github default 브랜치 명 변경 방법
 1. 깃 설치 후 할것,사용자 등록을 한다
 
 2. 만약 gitbash가 master인데 github가 main인 경우 git branch -m master main으로 바꿔준다 (반대도 마찬가지)
+git checkout main
    *fatal: Not a valid object name 오류가 뜬 경우는 commit을 한 번도 안 해서 뜨므로 
    대충 새로운 브런치에 올릴 파일을 add 한 후에 commit -m을 하자
 
@@ -94,3 +95,23 @@ git commit -m "delete folder"
 ---------------------------------------------------------------------------------------------
 -현재 위치에 clone하기-
 git clone {url} 
+
+
+----------------------------------------------------------------------------------------------
+git log --oneline
+: 현재 브런치의 commit 목록 보기
+
+git log --oneline --branches
+: 모든 브런치의 commit 목록 보기
+
+git diff a_branch b_branch
+: 달라진 커밋 보기
+
+git merge a_branch b_branch
+: 병합하기
+
+git rebase a_branch   (현재 활성화 된 것은 b_branch)
+: b_branch의 커밋을 a_branch로 재배치
+
+git checkout a_branch
+: a_branch로 이동(를 활성화)
